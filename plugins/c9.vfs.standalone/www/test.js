@@ -238,7 +238,7 @@ require([
                 
                 layout.initMenus = function() {};
                 layout.findParent = function(){
-                    if (!bar || bar.$amlDestroyed) {
+                    if (!bar || bar.$amlDestroyed || !bar.$ext || !bar.$ext.parentNode) {
                         bar = apf.document.documentElement.appendChild(
                             new imports.ui.bar());
                         bar.$ext.style.position = "fixed";
@@ -446,6 +446,7 @@ require([
             "metrics": {
                 getLastPing: function() { throw Error("Not implemented"); },
                 getLastest: function() { throw Error("Not implemented"); },
+                onPingComplete: function() { throw Error("Not implemented"); },
                 log: function() {},
                 increment: function() {}
             },
@@ -563,7 +564,6 @@ require([
                     if (err.missingMock.length) {
                         console.error("Missing mock services for " + err.missingMock);
                     } else {
-                        console.warn("Adding mock services for " + err.unresolved);
                         return expect.setupArchitectTest(config, architect, {
                             mockPlugins: config.unresolved,
                             existingPlugins: err.resolved

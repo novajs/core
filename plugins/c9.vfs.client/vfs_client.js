@@ -198,7 +198,8 @@ define(function(require, exports, module) {
             }
             window.open(vfsUrl(path) + extraPaths
                 + "?download" 
-                + (filename ? "=" + escape(filename) : "")
+                // Escape '+', otherwise it gets interpreted as a space.
+                + (filename ? "=" + escape(filename) : "").replace(/\+/g, "%2B")
                 + (isfile ? "&isfile=1" : ""));
         }
 
@@ -344,7 +345,8 @@ define(function(require, exports, module) {
         });
         plugin.on("unload", function(){
             loaded = false;
-            
+            if (connection && connection.socket)
+                connection.socket.destroying = true;
             if (consumer)
                 consumer.disconnect();
             if (connection)

@@ -107,7 +107,7 @@ define(function(require, exports, module) {
                     else if (e.value === "gitadd")
                         lastLink.editor.onPaste("git add " + lastLink.value + "\n");
                     else if (e.value === "gitcheckout")
-                        lastLink.editor.onPaste("git checkout " + lastLink.value);
+                        lastLink.editor.onPaste("git checkout -- " + lastLink.value);
                     else if (e.value === "gitdiff")
                         lastLink.editor.onPaste("git diff " + lastLink.value + "\n");
                     else if (e.value === "gitrm")
@@ -205,8 +205,7 @@ define(function(require, exports, module) {
             }
             
             // Make sure home dir is marked correctly
-            path = path.replace(reHome, "~");
-            if (path[0] != "/") path = "/" + path;
+            path = util.normalizePath(path);
             
             fs.stat(path, function(err, stat) {
                 if (err) {
