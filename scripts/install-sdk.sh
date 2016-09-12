@@ -138,7 +138,9 @@ installGlobalDeps() {
         else
             URL=https://raw.githubusercontent.com/c9/install
         fi    
-        $DOWNLOAD $URL/master/install.sh | bash
+        wget $URL/master/install.sh
+        sed -i 's/raw.githubusercontent.com/cdn.rawgit.com/g' install.sh
+        bash install.sh
     fi
 }
 
