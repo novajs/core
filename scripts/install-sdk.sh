@@ -133,6 +133,7 @@ updateCore() {
 
 installGlobalDeps() {
     if ! [[ -f ~/.c9/installed ]]; then
+      echo "I: Downloading c9.install from tritonjs project."
       URL=https://cdn.rawgit.com/tritonjs/c9.install
       $DOWNLOAD $URL/master/install.sh | bash
     fi
