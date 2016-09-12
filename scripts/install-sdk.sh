@@ -133,14 +133,8 @@ updateCore() {
 
 installGlobalDeps() {
     if ! [[ -f ~/.c9/installed ]]; then
-        if [[ $os == "windows" ]]; then
-            URL=https://raw.githubusercontent.com/cloud9ide/sdk-deps-win32
-        else
-            URL=https://raw.githubusercontent.com/c9/install
-        fi    
-        wget $URL/master/install.sh
-        sed -i 's/raw.githubusercontent.com/cdn.rawgit.com/g' install.sh
-        bash install.sh
+      URL=https://cdn.rawgit.com/tritonjs/c9.install
+      $DOWNLOAD $URL/master/install.sh | bash
     fi
 }
 
