@@ -1,33 +1,33 @@
 module.exports = function(manifest, installPath) {
     if (!manifest) {
         manifest = require(__dirname + "/../package.json");
-        manifest.revision = 
+        manifest.revision =
             manifest.revision ||
             require("c9/git").getHeadRevisionSync(__dirname + "/..");
     }
-    
+
     var path = require("path");
     var os = require("os");
     var runners = require("../plugins/c9.ide.run/runners_list").local;
     var builders = require("../plugins/c9.ide.run.build/builders_list");
-    
+
     var workspaceDir = path.resolve(__dirname + "/../");
     var sdk = !manifest.sdk;
     var win32 = process.platform == "win32";
-    
+
     if (win32)
         readWin32Settings();
-    
+
     var home = process.env.HOME;
-    
+
     if (!installPath)
         installPath = path.join(home, ".c9");
-    
+
     var correctedInstallPath = installPath.substr(0, home.length) == home
         ? "~" + installPath.substr(home.length)
         : installPath;
     var inContainer = os.hostname().match(/-\d+$/);
-    
+
     var config = {
         standalone: true,
         startBridge: true,
@@ -56,10 +56,10 @@ module.exports = function(manifest, installPath) {
         correctedInstallPath: correctedInstallPath,
         staticPrefix: "/static",
         projectUrl: "/workspace",
-        ideBaseUrl: "http://c9.io",
+        ideBaseUrl: "http://ide.tritonjs.com",
         previewUrl: "/preview",
-        dashboardUrl: "https://c9.io/dashboard.html",
-        accountUrl: "https://c9.io/account",
+        dashboardUrl: "http://tritonjs.com/#/dashboard",
+        accountUrl: "http://tritonjs.com/#/dashboard/settings",
         apiUrl: "/api",
         homeUrl: "/home",
         collab: false,
@@ -154,6 +154,6 @@ function readWin32Settings() {
         if (!fs.existsSync(path.join(process.env.HOME, ".c9", "msys/bin/bash.exe")))
             console.error(e);
     }
-    
+
     process.env.CHERE_INVOKING = 1; // prevent cygwin from changing bash path
 }

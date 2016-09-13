@@ -3,12 +3,12 @@
     <div id="loadingide">
         <div class="cool-message"></div>
         <div class="status" style="display:none"><div class="spinner"></div></div>
-        
+
         <div id="content" class="loading-progress">
         </div>
         <div class="footer">
-            <a href="https://docs.c9.io">Documentation</a> | 
-            <a href="http://status.c9.io">Server Status</a> | 
+            <a href="https://docs.c9.io">Documentation</a> |
+            <a href="http://status.c9.io">Server Status</a> |
             <a href="http://support.c9.io">Support</a>
         </div>
     </div>
@@ -33,7 +33,7 @@
         "Not your grandmother's IDE",
         "Makes your laptop cooler"
     ];
-    
+
     var mac_keybindings = [
         "Press Ctrl-Option-Right to select the next instance of a word.",
         "Press Cmd-. to show all keyboard commands.",
@@ -47,7 +47,7 @@
         "Press Cmd-Shift-E to search for a function by name.",
         "Press Option-S to switch between a terminal and an editor.",
     ];
-    
+
     var win_keybindings = [
         "Press Ctrl-Alt-Right to select the next instance of a word.",
         "Press Ctrl-. to show all keyboard commands.",
@@ -60,31 +60,31 @@
         "Press Ctrl-Shift-E to search for a function by name.",
         "Press Alt-S to switch between a terminal and an editor.",
     ];
-    
+
     var isMac = (navigator.platform == "MacIntel" || navigator.platform == "Macintosh" || navigator.platform == "MacPPC");
     var platform_keybindings = isMac ? mac_keybindings : win_keybindings;
     messages = messages.concat(platform_keybindings);
-    
+
     var idx = Math.floor(Math.random() * messages.length);
     if (idx == messages.length) idx = messages.length - 1;
     var msg = messages[idx];
-    
+
     if (~location.hash.indexOf("create")) {
         msg = "Creating Your New Workspace";
         location.hash = location.hash.replace(/&?create/, "");
     }
-    
+
     document.querySelector("#loadingide .cool-message").innerHTML = msg;
 
     setTimeout(function(){
         var s = document.querySelector("#loadingide .status");
         if (s) s.style.display = "block";
     }, 2000);
-    
+
     window.hideLoader = function(){
         var loader = document.getElementById("loadingcontainer");
         loader.parentNode.removeChild(loader);
-        
+
         document.body.className = document.body.className.replace("loading " + loadingIde.className, "");
     }
 </script>

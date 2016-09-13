@@ -14,7 +14,7 @@
 }
 
 #loadingide {
-    background-image: url(images/c9-logo-blue.png);
+    background-image: url(images/triton/tb.png);
     background-repeat: no-repeat;
     background-position: 50% 30%;
     font-style: normal;
@@ -75,16 +75,16 @@
 #loadingide.dark .footer {
     color: #818181;
 }
-#loadingide .footer, 
-#loadingide .footer > a:link, 
-#loadingide .footer > a:visited, 
+#loadingide .footer,
+#loadingide .footer > a:link,
+#loadingide .footer > a:visited,
 #loadingide .footer > a:active {
     color: #333;
     text-decoration: none;
 }
-#loadingide.dark .footer, 
-#loadingide.dark .footer > a:link, 
-#loadingide.dark .footer > a:visited, 
+#loadingide.dark .footer,
+#loadingide.dark .footer > a:link,
+#loadingide.dark .footer > a:visited,
 #loadingide.dark .footer > a:active {
     color: #909090;
 }

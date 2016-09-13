@@ -50,28 +50,28 @@ FORCE=
 
 updatePackage() {
     name=$1
-    
+
     REPO=https://github.com/c9/$name
     echo "${green}checking out ${resetColor}$REPO"
-    
+
     if ! [[ -d ./plugins/$name ]]; then
         mkdir -p ./plugins/$name
     fi
-    
+
     pushd ./plugins/$name
     if ! [[ -d .git ]]; then
         git init
         # git remote rm origin || true
         git remote add origin $REPO
     fi
-    
+
     version=`"$NODE" -e 'console.log((require("../../package.json").c9plugins["'$name'"].substr(1) || "origin/master"))'`;
     rev=`git rev-parse --revs-only $version`
-    
+
     if [ "$rev" == "" ]; then
         git fetch origin
     fi
-    
+
     status=`git status --porcelain --untracked-files=no`
     if [ "$status" == "" ]; then
         git reset $version --hard
@@ -79,13 +79,17 @@ updatePackage() {
         echo "${yellow}$name ${red}contains uncommited changes.${yellow} Skipping...${resetColor}"
     fi
     popd
+
+    # Staging script
+    # echo "N: cleaning up old modules"
+    # rm -rf ./plugins/$name
 }
 
 updateAllPackages() {
     c9packages=`"$NODE" -e 'console.log(Object.keys(require("./package.json").c9plugins).join(" "))'`;
     count=${#c9packages[@]}
     i=0
-    for m in ${c9packages[@]}; do echo $m; 
+    for m in ${c9packages[@]}; do echo $m;
         i=$(($i + 1))
         echo "updating plugin ${blue}$i${resetColor} of ${blue}$count${resetColor}"
         updatePackage $m
@@ -96,7 +100,7 @@ updateNodeModules() {
     echo "${magenta}--- Running npm install --------------------------------------------${resetColor}"
     safeInstall(){
         deps=`"$NODE" -e 'console.log(Object.keys(require("./package.json").dependencies).join(" "))'`;
-        for m in ${deps[@]}; do echo $m; 
+        for m in ${deps[@]}; do echo $m;
             "$NPM" install --loglevel warn $m || true
         done
     }
