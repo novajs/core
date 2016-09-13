@@ -60,21 +60,21 @@ updatePackage() {
 
     pushd ./plugins/$name
     if ! [[ -d .git ]]; then
-        git init
+        git init >/dev/null
         # git remote rm origin || true
-        git remote add origin $REPO
+        git remote add origin $REPO >/dev/null
     fi
 
     version=`"$NODE" -e 'console.log((require("../../package.json").c9plugins["'$name'"].substr(1) || "origin/master"))'`;
     rev=`git rev-parse --revs-only $version`
 
     if [ "$rev" == "" ]; then
-        git fetch origin
+        git fetch origin > /dev/null
     fi
 
     status=`git status --porcelain --untracked-files=no`
     if [ "$status" == "" ]; then
-        git reset $version --hard
+        git reset $version --hard > /dev/null
     else
         echo "${yellow}$name ${red}contains uncommited changes.${yellow} Skipping...${resetColor}"
     fi
@@ -86,8 +86,8 @@ updatePackage() {
 }
 
 updateAllPackages() {
-    c9packages=`"$NODE" -e 'console.log(Object.keys(require("./package.json").c9plugins).join(" "))'`;
-    count=${#c9packages[@]}
+    c9packages=$("$NODE" -p 'Object.keys(require("./package.json").c9plugins).join(" ")');
+    count=$("$NODE" -p 'Object.keys(require("./package.json").c9plugins).length')
     i=0
     for m in ${c9packages[@]}; do echo $m;
         i=$(($i + 1))
