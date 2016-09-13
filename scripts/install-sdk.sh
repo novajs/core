@@ -60,16 +60,16 @@ updatePackage() {
 
     pushd ./plugins/$name
     if ! [[ -d .git ]]; then
-        git init >/dev/null
+        git init > /dev/null
         # git remote rm origin || true
-        git remote add origin $REPO >/dev/null
+        git remote add origin $REPO > /dev/null
     fi
 
     version=`"$NODE" -e 'console.log((require("../../package.json").c9plugins["'$name'"].substr(1) || "origin/master"))'`;
     rev=`git rev-parse --revs-only $version`
 
     if [ "$rev" == "" ]; then
-        git fetch origin > /dev/null
+        git fetch origin 2> /dev/null
     fi
 
     status=`git status --porcelain --untracked-files=no`
