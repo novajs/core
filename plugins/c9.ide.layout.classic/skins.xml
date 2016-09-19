@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <a:skin xmlns:a="http://ajax.org/2005/aml">
 <a:frame  name="frame">
-    
+
 
     <a:presentation>
         <a:main container="div[2]" caption="div[1]/span" buttons="div[1]/div">
@@ -16,7 +16,7 @@
     </a:presentation>
 </a:frame>
 <a:checkbox  name="cboffline">
-    
+
 
     <a:presentation>
         <a:main>
@@ -27,7 +27,7 @@
     </a:presentation>
 </a:checkbox>
 <a:bar  name="toolbar-top">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -37,7 +37,7 @@
     </a:presentation>
 </a:bar>
 <a:bar name="bar">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -47,7 +47,7 @@
     </a:presentation>
 </a:bar>
 <a:bar  name="panel-bar">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -57,7 +57,7 @@
     </a:presentation>
 </a:bar>
 <a:bar  name="c9-menu-bar">
-    
+
 
     <a:presentation>
         <a:main container="div/div/div[1]">
@@ -67,7 +67,6 @@
                         <div class="c9-mbar-cont"> </div>
 
                         <div class="c9-mbar-round">
-                            <a id="backToC9" href="http://c9.io/" class="mainlogo backToC9" target="_blank" title="Go to c9.io">c9.io</a>
                             <div class="c9-activity" id="saveStatus"><div class="light"> </div></div>
                             <!--div id="offlineInfoDiv" class="c9-offlineInfo menu-bk upward moveleft menu-bkFocus">Keep working without<br />internet. When you're back online, Cloud9 syncs your files for you!<div class="offlineInfoWarn">Some features are disabled.</div></div-->
                         </div>
@@ -78,9 +77,9 @@
     </a:presentation>
 </a:bar>
 <a:button  name="button">
-    
-    
-    
+
+
+
     <a:presentation>
         <a:main caption="div[3]/text()" label="div[3]/text()" background="." icon="div[3]/span" minwidth="30">
             <div class="btn">
@@ -96,7 +95,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="btn_icon_only">
-    
+
     <a:presentation>
         <a:main caption="." label="." background="." icon=".">
             <div class="btn_icon_only"> </div>
@@ -104,7 +103,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="c9-menu-btn">
-    
+
 
     <a:presentation>
         <a:main caption="text()" background="." icon="div[2]" minwidth="26">
@@ -117,7 +116,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="c9-toolbarbutton-light">
-    
+
 
     <a:presentation>
         <a:main caption="div[2]/text()" background="." icon="div[1]">
@@ -129,7 +128,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="c9-toolbarbutton">
-    
+
 
     <a:presentation>
         <a:main caption="div[2]/text()" background="." icon="div[1]">
@@ -141,7 +140,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="c9-toolbarbutton-glossy">
-    
+
 
     <a:presentation>
         <a:main caption="div[2]/text()" background="." icon="div[1]">
@@ -153,7 +152,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="header-btn">
-    
+
 
     <a:presentation>
         <a:main caption="text()" background="." icon=".">
@@ -162,7 +161,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="browser-btn">
-    
+
 
     <a:presentation>
         <a:main caption="text()" background="." icon="span">
@@ -171,7 +170,7 @@
     </a:presentation>
 </a:button>
 <a:button  name="btn-default-css3">
-    
+
 
     <a:presentation>
         <a:main caption="div[1]/text()" background="." icon=".">
@@ -183,8 +182,8 @@
     </a:presentation>
 </a:button>
 <a:checkbox  name="checkbox">
-    
-    
+
+
 
     <a:presentation>
         <a:main label="span/text()" minheight="18" minwidth="18">
@@ -196,7 +195,7 @@
     </a:presentation>
 </a:checkbox>
 <a:checkbox  name="checkbox_black">
-    
+
 
     <a:presentation>
         <a:main label="span/text()" minheight="18" minwidth="18">
@@ -208,7 +207,7 @@
     </a:presentation>
 </a:checkbox>
 <a:checkbox  name="checkbox_grey">
-    
+
 
     <a:presentation>
         <a:main label="span/text()" minheight="18" minwidth="18">
@@ -220,11 +219,11 @@
     </a:presentation>
 </a:checkbox>
 <a:datagrid  name="datagrid">
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
     <a:presentation>
@@ -273,7 +272,7 @@
     </a:presentation>
 </a:datagrid>
 <a:divider  name="divider">
-    
+
 
     <a:presentation>
         <a:main container="." caption="span" minheight="2" minwidth="2">
@@ -282,7 +281,7 @@
     </a:presentation>
 </a:divider>
 <a:divider  name="divider_console">
-    
+
 
     <a:presentation>
         <a:main container="." caption="." minheight="2" minwidth="0">
@@ -291,7 +290,7 @@
     </a:presentation>
 </a:divider>
 <a:divider  name="c9-divider-hor">
-    
+
 
     <a:presentation>
         <a:main caption="span">
@@ -300,7 +299,7 @@
     </a:presentation>
 </a:divider>
 <a:divider  name="c9-divider-double">
-    
+
 
     <a:presentation>
         <a:main>
@@ -311,7 +310,7 @@
     </a:presentation>
 </a:divider>
 <a:dropdown  name="black_dropdown">
-    
+
 
     <a:presentation>
         <a:main label="div[1]/text()" button="." width-diff="-1" item-height="21" minheight="21" maxheight="21">
@@ -333,7 +332,7 @@
     </a:presentation>
 </a:dropdown>
 <a:dropdown  name="dropdown-dark-glossy">
-    
+
 
     <a:presentation>
         <a:main label="div[1]/text()" button="." width-diff="-1" item-height="20">
@@ -355,7 +354,7 @@
     </a:presentation>
 </a:dropdown>
 <a:dropdown  name="dropdown">
-    
+
 
     <a:presentation>
         <a:main label="div[1]/text()" button="." width-diff="-1" item-height="20" minheight="20" maxheight="20">
@@ -382,7 +381,7 @@
     </a:presentation>
 </a:dropdown>
 <a:label  name="label">
-    
+
 
     <a:presentation>
         <a:main caption="." for="@for" minheight="17">
@@ -391,7 +390,7 @@
     </a:presentation>
 </a:label>
 <a:list  name="list">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -413,7 +412,7 @@
     </a:presentation>
 </a:list>
 <a:list  name="lineselect">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -429,7 +428,7 @@
     </a:presentation>
 </a:list>
 <a:list  name="list_dark">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -451,7 +450,7 @@
     </a:presentation>
 </a:list>
 <a:menu  name="menu">
-    
+
     <a:presentation>
         <a:main container="." overlay="strong">
             <blockquote class="c9menu">
@@ -467,8 +466,8 @@
     </a:presentation>
 </a:menu>
 <a:scrollbar  name="sbios">
-    
-    
+
+
 
     <a:presentation>
         <a:main indicator="div/div">
@@ -487,7 +486,7 @@
     </a:presentation>
 </a:scrollbar>
 <a:modalwindow  name="bk-window">
-    
+
 
     <a:presentation>
         <a:main collapsed-height="26" minheight="50" minwidth="50" container="div[3]" drag="div[1]" title="div[1]/text()" icon="div[1]/div[1]" buttons="div[1]/div[2]">
@@ -534,7 +533,7 @@
     </a:presentation>
 </a:modalwindow>
 <a:radiobutton  name="radiobutton">
-    
+
 
     <a:presentation>
         <a:main label="div">
@@ -547,8 +546,8 @@
     </a:presentation>
 </a:radiobutton>
 <a:scrollbar  name="scrollbar">
-    
-    
+
+
 
     <a:presentation>
         <a:main btnup="div[1]" indicator="div[2]" btndown="div[3]" slidefast="div[4]">
@@ -562,8 +561,8 @@
     </a:presentation>
 </a:scrollbar>
 <a:spinner  name="spinner">
-    
-    
+
+
     <a:presentation>
         <a:main container="." input="div[2]/input" buttonplus="div/div[1]" buttonminus="div/div[2]" minwidth="35">
             <div class="spinner">
@@ -579,7 +578,7 @@
     </a:presentation>
 </a:spinner>
 <a:splitter  name="splitter">
-    
+
     <a:presentation>
         <a:main handle=".">
             <div class="splitter">
@@ -589,7 +588,7 @@
     </a:presentation>
 </a:splitter>
 <a:textbox  name="tbsimple">
-    
+
 
     <a:presentation>
         <a:main input=".">
@@ -598,7 +597,7 @@
     </a:presentation>
 </a:textbox>
 <a:password  name="password">
-    
+
 
     <a:presentation>
         <a:main input="div/input">
@@ -612,7 +611,7 @@
     </a:presentation>
 </a:password>
 <a:textbox  name="colorbox">
-    
+
 
     <a:presentation>
         <a:main input=".">
@@ -623,7 +622,7 @@
 <a:textbox  name="textbox">
     <a:alias>input</a:alias>
     <a:alias>secret</a:alias>
-    
+
 
     <a:presentation>
         <a:main input="div/input">
@@ -636,7 +635,7 @@
     </a:presentation>
 </a:textbox>
 <a:textbox  name="textarea">
-    
+
 
     <a:presentation>
         <a:main input=".">
@@ -645,7 +644,7 @@
     </a:presentation>
 </a:textbox>
 <a:toolbar  name="toolbar">
-    
+
 
     <a:presentation>
         <a:main container=".">
@@ -665,7 +664,7 @@
     </a:presentation>
 </a:toolbar>
 <a:errorbox  name="errorbox">
-        
+
 
         <a:presentation>
             <a:main container="div[1]/span" caption="div[1]/span" for="@for" close="div[3]/a" maxwidth="275">
@@ -690,7 +689,7 @@
         </a:presentation>
     </a:errorbox>
 <a:img  name="img">
-        
+
 
         <a:presentation>
             <a:main image="img/@src">
@@ -701,7 +700,7 @@
         </a:presentation>
     </a:img>
 <a:img  name="simpleimg">
-        
+
 
         <a:presentation>
             <a:main image="@src">
@@ -710,7 +709,7 @@
         </a:presentation>
     </a:img>
 <a:button  name="blackbutton">
-        
+
         <a:presentation>
             <a:main caption=".">
                 <div class="blackbutton"> </div>
@@ -718,7 +717,7 @@
         </a:presentation>
     </a:button>
 <a:textbox  name="searchbox">
-        
+
 
         <a:presentation>
             <a:main input="div[1]/div" button="div[2]">
@@ -732,7 +731,7 @@
         </a:presentation>
     </a:textbox>
 <a:textbox  name="forminput">
-        
+
 
         <a:presentation>
             <a:main input="div[1]/input" button="div[2]">
@@ -746,7 +745,7 @@
         </a:presentation>
     </a:textbox>
 <a:codebox  name="codebox">
-        
+
 
         <a:presentation>
             <a:main input="div[1]/div" button="div[2]">
@@ -760,7 +759,7 @@
         </a:presentation>
     </a:codebox>
 <a:codebox  name="simplebox">
-        
+
 
         <a:presentation>
             <a:main input=".">
@@ -776,7 +775,7 @@
         <div class="editor_tab empty">
             <div class="btnsesssioncontainer">
                 <div class="inside">
-                    
+
                 </div>
             </div>
         </div>
@@ -844,7 +843,7 @@
 <a:button name="btn_console_open">
     <a:presentation>
         <a:main caption="span" label="span" background="." icon="." minwidth="18">
-            <div class="btn_console_open"> 
+            <div class="btn_console_open">
                 <span> </span>
             </div>
         </a:main>
@@ -853,7 +852,7 @@
 <a:button name="btn_console">
     <a:presentation>
         <a:main caption="div" label="div" background="." icon=".">
-            <div class="btn_console"> 
+            <div class="btn_console">
                 <div> </div>
             </div>
         </a:main>

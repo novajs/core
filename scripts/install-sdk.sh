@@ -50,15 +50,23 @@ FORCE=
 
 updatePackage() {
     name=$1
+    num=$2
+    max=$3
 
     REPO=https://github.com/c9/$name
-    echo "${green}checking out ${resetColor}$REPO"
+    echo -n "[${blue}$num${resetColor}/${blue}$3${resetColor}]"
+    if [[ $2 -lt 10 ]]; then
+      echo -n " "
+    fi
+
+    # TODO: Allow < 100 op.
+    echo " ${green}pulling plugin ${resetColor}$name"
 
     if ! [[ -d ./plugins/$name ]]; then
         mkdir -p ./plugins/$name
     fi
 
-    pushd ./plugins/$name
+    pushd ./plugins/$name >/dev/null
     if ! [[ -d .git ]]; then
         git init > /dev/null
         # git remote rm origin || true
@@ -78,21 +86,20 @@ updatePackage() {
     else
         echo "${yellow}$name ${red}contains uncommited changes.${yellow} Skipping...${resetColor}"
     fi
-    popd
+    popd >/dev/null
 
     # Staging script
-    # echo "N: cleaning up old modules"
-    # rm -rf ./plugins/$name
+    echo "N: cleaning up old modules"
+    rm -rf ./plugins/$name
 }
 
 updateAllPackages() {
     c9packages=$("$NODE" -p 'Object.keys(require("./package.json").c9plugins).join(" ")');
     count=$("$NODE" -p 'Object.keys(require("./package.json").c9plugins).length')
     i=0
-    for m in ${c9packages[@]}; do echo $m;
+    for m in ${c9packages[@]}; do
         i=$(($i + 1))
-        echo "updating plugin ${blue}$i${resetColor} of ${blue}$count${resetColor}"
-        updatePackage $m
+        updatePackage $m $i $count
     done
 }
 

@@ -16,36 +16,32 @@ define(function(require, exports, module) {
         var preload = imports["layout.preload"];
         var anims = imports.anims;
         var ui = imports.ui;
-        
+
         var markup = require("text!./layout.xml");
-        
+
         // pre load themes
-        require("text!./themes/default-dark.less");
-        require("text!./themes/default-dark-gray.less");
-        require("text!./themes/default-light-gray.less");
-        require("text!./themes/default-light.less");
         require("text!./themes/default-flat-light.less");
         require("text!./themes/default-flat-dark.less");
-        
+
         /***** Initialization *****/
-        
+
         var plugin = new Plugin("Ajax.org", main.consumes);
         var emit = plugin.getEmitter();
-        
+
         var dashboardUrl = options.dashboardUrl || "/dashboard.html";
-        
+
         var logobar, removeTheme, theme;
         var c9console, menus, tabManager, panels;
         var userLayout, ignoreTheme, notify, svg;
-        
+
         var loaded = false;
         function load(){
             if (loaded) return false;
             loaded = true;
-            
+
             settings.on("read", function(){
                 updateTheme(true);
-                
+
                 userLayout = settings.get("user/general/@layout");
                 settings.on("user/general", function(){
                     var newlayout = settings.get("user/general/@layout");
@@ -55,48 +51,48 @@ define(function(require, exports, module) {
                     }
                 });
             }, plugin);
-            
+
             settings.on("user/general/@skin", function(){
                 !ignoreTheme && updateTheme();
             }, plugin);
-            
+
             plugin.on("newListener", function(type, listener){
                 if (type == "eachTheme")
                     listener({});
             }, plugin);
-            
+
             if (!ui.packedThemes) {
                 var theme = settings.get("user/general/@skin");
-                
+
                 ui.defineLessLibrary(require("text!./themes/default-" + theme + ".less"), plugin);
                 ui.defineLessLibrary(require("text!./less/lesshat.less"), plugin);
-                
+
                 ui.insertCss(require("text!./keyframes.css")
-                  .replace(/@\{image-path\}/g, options.staticPrefix + "/images"), 
+                  .replace(/@\{image-path\}/g, options.staticPrefix + "/images"),
                   false, plugin);
-                
-                ui.insertCss(require("text!./less/main.less"), 
+
+                ui.insertCss(require("text!./less/main.less"),
                     options.staticPrefix, plugin);
             }
-            
+
             draw();
         }
-        
+
         var drawn = false;
         function draw(){
             if (drawn) return;
             drawn = true;
-            
+
             // Load the skin
             ui.insertSkin({
                 "data"       : require("text!./skins.xml"),
                 "media-path" : options.staticPrefix + "/images/",
                 "icon-path"  : options.staticPrefix + "/icons/"
             }, plugin);
-            
+
             // Create UI elements
             ui.insertMarkup(null, markup, plugin);
-            
+
             var hboxMain = plugin.getElement("hboxMain");
             var colRight = plugin.getElement("colRight");
             hboxMain.$handle.setAttribute("id", "splitterPanelLeft");
@@ -106,7 +102,7 @@ define(function(require, exports, module) {
 
             // Intentionally global
             window.sbShared = plugin.getElement("sbShared");
-            
+
             // update c9 main logo link
             logobar = plugin.getElement("logobar");
             if (c9.hosted) {
@@ -117,7 +113,7 @@ define(function(require, exports, module) {
                     mainlogo.innerHTML = "Dashboard";
                 }
             }
-            
+
             // Offline
             // preload the offline images programmatically:
             [
@@ -126,43 +122,43 @@ define(function(require, exports, module) {
                 var img = new Image();
                 img.src = options.staticPrefix + "/images/" + p;
             });
-            
+
             window.addEventListener("resize", resize, false);
             window.addEventListener("focus", resize, false);
-            
+
             setGeckoMask();
-            
+
             plugin.addOther(function(){
                 window.removeEventListener("resize", resize, false);
                 window.removeEventListener("focus", resize, false);
             });
-            
+
             emit("draw");
         }
-        
-        var allowedThemes = { 
-            "dark": 1, 
-            "dark-gray": 1, 
-            "light-gray": 1, 
-            "light": 1,
-            "flat-light": 1, 
+
+        var allowedThemes = {
+            "dark": 0,
+            "dark-gray": 0,
+            "light-gray": 0,
+            "light": 0,
+            "flat-light": 1,
             "flat-dark": 1
         };
-        
+
         function updateTheme(noquestion, type) {
             var sTheme = settings.get("user/general/@skin");
             if (!allowedThemes[sTheme])
                 sTheme = "dark";
-            
+
             if (noquestion === undefined)
                 noquestion = !theme;
-            
+
             var oldTheme = theme;
-            
+
             if (sTheme !== theme) {
                 // Set new Theme
                 theme = sTheme;
-                
+
                 if (ui.packedThemes) {
                     preload.getTheme(theme, function(err, theme) {
                         if (err)
@@ -185,23 +181,23 @@ define(function(require, exports, module) {
             }
             function changeTheme() {
                 if (!oldTheme) return;
-                
+
                 emit("eachTheme", { changed: true });
-                
-                var auto = emit("themeChange", { 
-                    theme: theme, 
+
+                var auto = emit("themeChange", {
+                    theme: theme,
                     oldTheme: oldTheme,
                     type: type
                 }) !== false;
-                
+
                 setGeckoMask();
-                
+
                 if (noquestion) return;
-                
+
                 if (auto)
                     return emit("themeDefaults", { theme: theme, type: type });
-                
-                question.show("Set default colors?", 
+
+                question.show("Set default colors?",
                     "Would you like to reset colors to their default value?",
                     "Plugins like the terminal, the output window and others "
                     + "have default colors based on the main theme. Click Yes to "
@@ -213,12 +209,12 @@ define(function(require, exports, module) {
                     });
             }
         }
-        
+
         function proposeLayoutChange(kind, force, type) {
             if (!force && settings.getBool("user/general/@propose"))
                 return;
-            
-            question.show("Change the Main Cloud9 Theme", 
+
+            question.show("Change the Main Cloud9 Theme",
                 "Would you like to change the main theme to a " + kind + " theme?",
                 "Click Yes to change the theme or No to keep the current theme.",
                 function(){ // yes
@@ -234,16 +230,16 @@ define(function(require, exports, module) {
                 },
                 { showDontAsk: true });
         }
-        
+
         /***** Methods *****/
-        
+
         // There will be a better place for this when theming is fully
         // abstracted. For now this is a hack
         function setGeckoMask(){
             if (!apf.isGecko) return;
-            
+
             if (svg) svg.parentNode.removeChild(svg);
-            
+
             var isFlatTheme = theme.indexOf("flat") > -1;
             var img = options.staticPrefix + "/images/" + (
                 isFlatTheme
@@ -253,7 +249,7 @@ define(function(require, exports, module) {
             var height = isFlatTheme ? 26 : 24;
             var x1 = isFlatTheme ? 1 : 1;
             var x2 = isFlatTheme ? -40 : -28;
-            
+
             document.body.insertAdjacentHTML("beforeend", '<svg xmlns="http://www.w3.org/2000/svg">'
                 + '<defs>'
                     + '<mask id="tab-mask-left" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">'
@@ -264,18 +260,18 @@ define(function(require, exports, module) {
                     + '</mask>'
                 + '</defs>'
             + '</svg>');
-            
+
             svg = document.body.lastChild;
         }
-        
+
         function findParent(obj, where) {
             if (obj.name == "menus") {
                 menus = obj;
                 return plugin.getElement("logobar");
             }
-            if (obj.name == "save") 
+            if (obj.name == "save")
                 return plugin.getElement("barTools");
-            if (obj.name == "run.gui") 
+            if (obj.name == "run.gui")
                 return plugin.getElement("barTools");
             else if (obj.name == "console") {
                 c9console = obj;
@@ -315,7 +311,7 @@ define(function(require, exports, module) {
                 return  plugin.getElement("barQuestion");
             }
         }
-        
+
         function initMenus(menus) {
             // Menus
             menus.setRootMenu("Cloud9", 50, plugin);
@@ -327,15 +323,15 @@ define(function(require, exports, module) {
             // run plugin adds: menus.setRootMenu("Run", 600, plugin);
             menus.setRootMenu("Tools", 700, plugin);
             menus.setRootMenu("Window", 800, plugin);
-            
+
             var amlNode = menus.get("Cloud9").item;
             if (amlNode && amlNode.$ext)
                 amlNode.$ext.className += " c9btn";
-            
+
             menus.addItemByPath("File/~", new apf.divider(), 1000000, plugin);
-    
+
             menus.addItemByPath("View/~", new apf.divider(), 9999, plugin);
-            
+
             menus.addItemByPath("Window/Presets", null, 10200, plugin);
             menus.addItemByPath("Window/Presets/Full IDE", new ui.item({
                 onclick: function(){ setBaseLayout("default"); }
@@ -347,7 +343,7 @@ define(function(require, exports, module) {
                 onclick: function(){ setBaseLayout("sublime"); }
             }), 300, plugin);
         }
-        
+
         function resetTheme(theme, type) {
             ignoreTheme = true;
             settings.set("user/general/@skin", theme);
@@ -355,39 +351,39 @@ define(function(require, exports, module) {
             emit("themeDefaults", {theme: theme, type: type});
             ignoreTheme = false;
         }
-        
+
         function resize(){
             if (c9console && tabManager) {
                 var tRect = tabManager.container.$ext.getBoundingClientRect();
                 var cRect = c9console.container.$ext.getBoundingClientRect();
-                
+
                 if (cRect.top - tRect.top < 30) {
-                    c9console.container.setAttribute("height", 
+                    c9console.container.setAttribute("height",
                         Math.max(60, window.innerHeight - tRect.top - 30));
                 }
             }
-            
+
             emit("resize");
         }
-        
+
         function setBaseLayout(type) {
             if (type == "sublime") {
                 // Hide all side panes
                 Object.keys(panels.panels).forEach(function(name) {
                     panels.disablePanel(name, null, name == "tree");
                 });
-                
+
                 // Hide console
                 c9console && c9console.hide();
-                
+
                 // Minimize menus
                 menus.minimize();
-                
+
                 // Active tree
                 // setTimeout(function(){
                 //     panels.activate("tree");
                 // }, 300);
-                
+
                 // Set Sublime Like Defaults
                 settings.set("user/ace/@cursorStyle", "smooth slim");
                 settings.set("user/ace/@theme", "ace/theme/monokai");
@@ -408,19 +404,19 @@ define(function(require, exports, module) {
                 settings.set("user/ace/@wrapBehavioursEnabled", false);
                 settings.set("user/language/@overrideMultiselectShortcuts", true);
                 settings.set("user/openfiles/@show", c9.local);
-                
+
                 if (type == "default") {
                     // Hide all side panes
                     Object.keys(panels.panels).forEach(function(name) {
                         panels.enablePanel(name, true);
                     });
-                    
+
                     // Hide console
                     commands.exec("toggleconsole", null, { show: true });
-                    
+
                     // Minimize menus
                     menus.restore();
-                    
+
                     // Active tree
                     panels.activate("tree");
                 }
@@ -429,13 +425,13 @@ define(function(require, exports, module) {
                     Object.keys(panels.panels).forEach(function(name) {
                         panels.disablePanel(name, null, name == "tree");
                     });
-                    
+
                     // Hide console
                     c9console && c9console.hide();
-                    
+
                     // Minimize menus
                     menus.minimize();
-                    
+
                     // Active tree
                     // setTimeout(function(){
                     //     panels.activate("tree");
@@ -443,29 +439,29 @@ define(function(require, exports, module) {
                 }
             }
         }
-        
+
         var activeFindArea, defaultFindArea, activating;
         function setFindArea(amlNode, options, callback) {
             var animate = options.animate;
             if (animate == undefined)
                 animate = settings.getBool("user/general/@animateui");
-            
+
             var toHide = activeFindArea || defaultFindArea;
             if (options.isDefault)
                 defaultFindArea = amlNode;
             var toShow = amlNode || defaultFindArea;
             activeFindArea = amlNode;
-            
+
             if (toShow == toHide)
                 return;
-            
+
             var searchRow = plugin.getElement("searchRow");
             activating = true;
             if (toShow) {
                 searchRow.appendChild(toShow);
                 toShow.show();
                 toShow.$ext.style.overflow = "hidden";
-                toShow.$ext.style.height = 
+                toShow.$ext.style.height =
                     toShow.$ext.offsetHeight + "px";
             }
             hide(toHide, function() {
@@ -474,7 +470,7 @@ define(function(require, exports, module) {
                     callback && callback();
                 });
             });
-            
+
             function show(amlNode, callback) {
                 if (!amlNode)
                     return callback();
@@ -492,11 +488,11 @@ define(function(require, exports, module) {
             function hide(amlNode, callback) {
                 if (!amlNode)
                     return callback();
-                
+
                 amlNode.visible = false;
                 amlNode.$ext.style.height
                     = amlNode.$ext.offsetHeight + "px";
-                
+
                 if (animate) {
                     anims.animateSplitBoxNode(amlNode, {
                         height: "0px",
@@ -507,7 +503,7 @@ define(function(require, exports, module) {
                         amlNode.hide();
                         if (amlNode.parentNode)
                             amlNode.parentNode.removeChild(amlNode);
-    
+
                         callback && callback();
                     });
                 }
@@ -520,39 +516,39 @@ define(function(require, exports, module) {
                 }
             }
         }
-        
+
         var hideFlagUpdate;
         function flagUpdate(callback) {
             if (hideFlagUpdate) return;
-            
+
             hideFlagUpdate = notify("<div class='c9-update'>A new version of "
                 + "Cloud9 is available. Click this bar to update to the new "
                 + "version (requires a restart).</div>", true);
-            
+
             document.querySelector(".c9-update").addEventListener("click", function(){
                 hideFlagUpdate();
                 hideFlagUpdate = null;
                 callback();
             }, false);
         }
-        
+
         /***** Lifecycle *****/
-        
+
         plugin.on("load", function(){
             load();
         });
         plugin.on("enable", function(){
-            
+
         });
         plugin.on("disable", function(){
-            
+
         });
         plugin.on("unload", function(){
             loaded = false;
             window.removeEventListener("resize", resize);
-            
+
             if (removeTheme) removeTheme();
-            
+
             logobar = null;
             removeTheme = null;
             theme = null;
@@ -567,24 +563,24 @@ define(function(require, exports, module) {
             activeFindArea = null;
             defaultFindArea = null;
             activating = null;
-            
+
             if (svg && svg.parentNode)
                 svg.parentNode.removeChild(svg);
             svg = null;
         });
-        
+
         /***** Register and define API *****/
-        
+
         /**
-         * Manages the layout of the Cloud9 UI. 
-         * 
-         * If you wish to build your own IDE, with a completely different 
+         * Manages the layout of the Cloud9 UI.
+         *
+         * If you wish to build your own IDE, with a completely different
          * layout (for instance for a tablet or phone) reimplement this plugin.
          * This plugin is capable of telling plugins where to render.
-         * 
+         *
          * The layout plugin also provides a way to display error messages to
          * the user.
-         * 
+         *
          * @singleton
          **/
         plugin.freezePublicAPI({
@@ -592,7 +588,7 @@ define(function(require, exports, module) {
                 var tRect = tabManager.container.$ext.getBoundingClientRect();
                 return window.innerHeight - tRect.top - 30;
             },
-            
+
             get theme(){
                 return theme;
             },
@@ -604,14 +600,14 @@ define(function(require, exports, module) {
              * @return {AMLElement}
              */
             findParent: findParent,
-            
+
             /**
              * Initializes the main menus
              * This method is called by the menus plugin.
              * @private
              */
             initMenus: initMenus,
-            
+
             /**
              * Resets theme (without questioning user).
              * @param {String} theme  Theme to use.
@@ -621,26 +617,26 @@ define(function(require, exports, module) {
 
             /**
              * Sets the layout in one of two default modes:
-             * @param {"default"|"minimal"} type 
+             * @param {"default"|"minimal"} type
              */
             setBaseLayout: setBaseLayout,
-            
+
             /**
-             * 
+             *
              */
             setFindArea: setFindArea,
-            
+
             /**
-             * 
+             *
              */
             proposeLayoutChange: proposeLayoutChange,
-            
+
             /**
-             * 
+             *
              */
             flagUpdate: flagUpdate
         });
-        
+
         register(null, {
             layout: plugin
         });

@@ -8,30 +8,25 @@ define(function(require, exports, module) {
         var Plugin = imports.Plugin;
         var http = imports.http;
         var ui = imports.ui;
-        
+
         var async = require("async");
 
         /***** Initialization *****/
-        
+
         var plugin = new Plugin("Ajax.org", main.consumes);
 
         var themePrefix = options.themePrefix;
         var packed = ui.packedThemes;
 
         var themes = {
-            "dark"       : "",
-            "dark-gray"  : "",
-            "light-gray" : "",
-            "light"      : "",
-            "flat-light" : "",
-            "flat-dark" : ""
+            "flat-light" : ""
         };
 
         /***** Methods *****/
-        
+
         function preload(callback) {
             settings.setDefaults("user/general", [
-                ["skin", options.defaultTheme || "flat-dark"]
+                ["skin", "flat-light"]
             ]);
             if (!packed || options.loadTheme) return callback();
             try {
@@ -61,18 +56,18 @@ define(function(require, exports, module) {
                 });
             }
         }
-        
+
         /***** Register and define API *****/
-        
+
         /**
-         * 
+         *
          * @singleton
          **/
         plugin.freezePublicAPI({
             getTheme: getTheme,
             packed: packed
         });
-        
+
         preload(function(err) {
             register(null, {
                 "layout.preload": plugin

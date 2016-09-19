@@ -29,16 +29,16 @@
     -moz-osx-font-smoothing: grayscale !important;
 }
 .dark #loadingide{
-    background-image: url(images/c9-logo-white.png);
+    background-image: url(images/triton/twN.png);
 }
 
 @media print, (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx) {
     #loadingide {
-        background-image: url(images/c9-logo-blue@2x.png);
+        background-image: url(images/triton/tbN.png);
         background-size: 300px 279px;
     }
     #loadingide.dark {
-        background-image: url(images/c9-logo-white@2x.png);
+        background-image: url(images/triton/twN.png);
     }
 }
 
