@@ -89,8 +89,8 @@ updatePackage() {
     popd >/dev/null
 
     # Staging script
-    echo "N: cleaning up old modules"
-    rm -rf ./plugins/$name
+    # echo "N: cleaning up old modules"
+    # rm -rf ./plugins/$name
 }
 
 updateAllPackages() {
