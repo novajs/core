@@ -23,7 +23,7 @@ module.exports = function(manifest, installPath, settingDir) {
 
     config.local = true;
     config.standalone = false;
-    config.host = "localhost";
+    config.host = "https://ide.tritonjs.com";
     config.startBridge = true;
     config.collab = false;
     config.apiUrl = "https://api.tritonjs.con",
