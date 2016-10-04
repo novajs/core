@@ -52,7 +52,7 @@ define(function(require, exports, module) {
         }
 
         /***** Methods *****/
-        
+
         function updateButton(e) {
             var user = e.user;
             if (lastUser && lastUser.id == user.id)
@@ -61,48 +61,45 @@ define(function(require, exports, module) {
             info.on("change", updateButton, plugin);
             createButton(user);
             lastUser = user;
-            
+
             emit.sticky("ready", { name: user.fullname, id: user.id }, plugin);
         }
 
         function createButton(user) {
             var name = "user_" + user.id;
-            
+
             // todo cleanup seems to not work well
             // without this menu is empty after logging out and back in
             if (lastUser)
                 menus.remove("user_" + lastUser.id);
             menus.remove(name);
-            
+
             var parent = layout.findParent(plugin);
-            
+
             // Insert CSS
             ui.insertCss(require("text!./login.css"), plugin);
-            
+
             // Create Menu
             mnuUser = new ui.menu();
             plugin.addElement(mnuUser);
-            
+
             // Add named button
             var icon = util.getGravatarUrl(user.email, 32, "");
             menus.addItemByPath(name + "/", mnuUser, 110000, plugin);
-            
+
             // Add Divider
-            ui.insertByIndex(parent, new ui.divider({ 
-                skin: "c9-divider-double", 
-                "class" : "extrasdivider" 
+            ui.insertByIndex(parent, new ui.divider({
+                skin: "c9-divider-double",
+                "class" : "extrasdivider"
             }), 870, plugin);
-            
+
             // Add sub menu items
             var c = 500;
             menus.addItemByPath(name + "/Dashboard", new ui.item({
-                onclick: function() { window.open(dashboardUrl); }
+                onclick: function() { window.open('https://tritonjs.com/#/dashboard'); }
             }), c += 100, plugin);
             menus.addItemByPath(name + "/Account", new ui.item({
-                onclick: function() { window.open(accountUrl); }
-            }), c += 100, plugin);
-            menus.addItemByPath(name + "/Home", new ui.item({
-                onclick: function() { window.open(ideBaseUrl + "?redirect=0"); }
+                onclick: function() { window.open('https://tritonjs.com/#/dashboard/me'); }
             }), c += 100, plugin);
 
             if (!options.noLogout) {
@@ -146,7 +143,7 @@ define(function(require, exports, module) {
 
         function signout() {
             vfsEndpoint.clearCache();
-            auth.logout(ideBaseUrl);
+            auth.logout('https://tritonjs.com/#/dashboard/logout');
         }
 
         function onReLogin() {
@@ -160,7 +157,7 @@ define(function(require, exports, module) {
                   });
             }
         }
-        
+
         /***** Lifecycle *****/
 
         plugin.on("load", function() {
@@ -183,7 +180,7 @@ define(function(require, exports, module) {
          **/
         plugin.freezePublicAPI({
             get menu(){ return mnuUser; },
-            
+
             _events: [
                 /**
                  * @event ready
