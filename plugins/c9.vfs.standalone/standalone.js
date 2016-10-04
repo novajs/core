@@ -252,20 +252,14 @@ function plugin(options, imports, register) {
         };
     };
     api.updatConfig = api.updatConfig || function(opts, params) {
-      function getCookie(name) {
-        var re = new RegExp(name + "=([^;]+)");
-        var value = re.exec(document.cookie);
-        return (value != null) ? unescape(value[1]) : null;
-      }
-
         var id = params.token;
         opts.accessToken = id || "token";
         var user = opts.extendOptions.user;
         user.id = id || -1;
-        user.name = id ? "user" + id : getCookie('triton_username')
-        user.email = id ? "user" + id + "@c9.io" : "email@example.com"
-        user.fullname = id ? "User " + id : getCookie('trion_username')
-        opts.workspaceDir = params.w ? params.w : options.workspaceDir;
+        user.name = id ? "user" + id : process.env.USERNAME
+        user.email = id ? "user" + id + "@c9.io" : "johndoe@example.org";
+        user.fullname = id ? "User " + id : "John Doe";
+        opts.workspaceDir = params.w ? params.w : process.env.USERNAME
         opts.projectName = basename(opts.workspaceDir);
         if (!options._projects) {
             options._projects = [options.workspaceDir];

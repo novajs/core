@@ -96,8 +96,8 @@ module.exports = function(manifest, installPath) {
         },
         user: {
             id: -1,
-            name: "johndoe",
-            fullname: "John Doe",
+            name: process.env.USERNAME,
+            fullname: process.env.USERNAME,
             email: "johndoe@example.org",
             pubkey: null
         },
