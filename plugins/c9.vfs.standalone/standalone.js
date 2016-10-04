@@ -1,7 +1,7 @@
 "use strict";
 
 plugin.consumes = [
-    "connect.static", 
+    "connect.static",
     "connect",
     "preview.handler",
     "connect.render",
@@ -10,7 +10,7 @@ plugin.consumes = [
 plugin.provides = ["api", "passport"];
 
 module.exports = plugin;
-    
+
 var fs = require("fs");
 var assert = require("assert");
 var async = require("async");
@@ -23,17 +23,17 @@ var frontdoor = require("frontdoor");
 function plugin(options, imports, register) {
     var previewHandler = imports["preview.handler"];
     var statics = imports["connect.static"];
-    
+
     assert(options.workspaceDir, "Option 'workspaceDir' is required");
     assert(options.options, "Option 'options' is required");
-    
+
 
     // serve index.html
     statics.addStatics([{
         path: __dirname + "/www",
         mount: "/"
     }]);
-    
+
     statics.addStatics([{
         path: __dirname + "/../../configs",
         mount: "/configs"
@@ -46,12 +46,12 @@ function plugin(options, imports, register) {
 
     var api = frontdoor();
     imports.connect.use(api);
-    
+
     api.get("/", function(req, res, next) {
         res.writeHead(302, { "Location": options.sdk ? "/ide.html" : "/static/places.html" });
         res.end();
     });
-    
+
     api.get("/ide.html", {
         params: {
             workspacetype: {
@@ -80,15 +80,15 @@ function plugin(options, imports, register) {
                 source: "query",
                 type: "number",
                 optional: true
-            }, 
+            },
             token: {
                 source: "query",
                 optional: true
-            },  
+            },
             w: {
                 source: "query",
                 optional: true
-            }, 
+            },
         }
     }, function(req, res, next) {
 
@@ -99,17 +99,17 @@ function plugin(options, imports, register) {
         opts.options.collab = collab;
         if (req.params.packed == 1)
             opts.packed = opts.options.packed = true;
-        
+
         var cdn = options.options.cdn;
         options.options.themePrefix = "/static/" + cdn.version + "/skin/" + configName;
         options.options.workerPrefix = "/static/" + cdn.version + "/worker";
         options.options.CORSWorkerPrefix = opts.packed ? "/static/" + cdn.version + "/worker" : "";
-        
+
         api.updatConfig(opts.options, {
             w: req.params.w,
             token: req.params.token
         });
-        
+
         opts.options.debug = req.params.debug !== undefined;
         res.setHeader("Cache-Control", "no-cache, no-store");
         res.render(__dirname + "/views/standalone.html.ejs", {
@@ -119,11 +119,11 @@ function plugin(options, imports, register) {
             version: opts.version
         }, next);
     });
-    
+
     api.get("/_ping", function(params, callback) {
-        return callback(null, {"ping": "pong"}); 
+        return callback(null, {"ping": "pong"});
     });
-    
+
     api.get("/preview/:path*", [
         function(req, res, next) {
             req.projectSession = {
@@ -139,7 +139,7 @@ function plugin(options, imports, register) {
         }),
         previewHandler.proxyCall()
     ]);
-    
+
     api.get("/preview", function(req, res, next) {
         res.redirect(req.url + "/");
     });
@@ -147,37 +147,37 @@ function plugin(options, imports, register) {
     api.get("/vfs-root", function(req, res, next) {
         if (!options.options.testing)
             return next();
-            
+
         res.writeHead(200, {"Content-Type": "application/javascript"});
-        res.end("define(function(require, exports, module) { return " 
+        res.end("define(function(require, exports, module) { return "
             + JSON.stringify(options.workspaceDir.replace(/\\/g, "/")) + "; });");
     });
     api.get("/vfs-home", function(req, res, next) {
         if (!options.options.testing)
             return next();
-            
+
         res.writeHead(200, {"Content-Type": "application/javascript"});
-        res.end("define(function(require, exports, module) { return " 
+        res.end("define(function(require, exports, module) { return "
             + JSON.stringify(process.env.HOME.replace(/\\/g, "/")) + "; });");
     });
 
     api.get("/update", function(req, res, next) {
         res.writeHead(200, {
-            "Content-Type": "application/javascript", 
+            "Content-Type": "application/javascript",
             "Access-Control-Allow-Origin": "*"
         });
         var path = resolve(__dirname + "/../../build/output/latest.tar.gz");
         fs.readlink(path, function(err, target) {
             if (err) return next(err);
-            
+
             res.end((target || "").split(".")[0]);
         });
     });
-    
+
     api.get("/update/:path*", function(req, res, next) {
         var filename = req.params.path;
         var path = resolve(__dirname + "/../../build/output/" + resolve("/" + filename));
-        
+
         var stream = fs.createReadStream(path);
         stream.on("error", function(err) {
             next(err);
@@ -185,7 +185,7 @@ function plugin(options, imports, register) {
         stream.on("data", function(data) {
             if (!res.headersSent)
                 res.writeHead(200, {"Content-Type": "application/octet-stream"});
-                
+
             res.write(data);
         });
         stream.on("end", function(data) {
@@ -195,11 +195,11 @@ function plugin(options, imports, register) {
 
     api.get("/configs/require_config.js", function(req, res, next) {
         var config = res.getOptions().requirejsConfig || {};
-        
+
         res.writeHead(200, {"Content-Type": "application/javascript"});
         res.end("requirejs.config(" + JSON.stringify(config) + ");");
     });
-    
+
     api.get("/test/all.json", function(req, res, next) {
         var base = __dirname + "/../../";
         var blacklistfile = base + "/test/blacklist.txt";
@@ -220,17 +220,17 @@ function plugin(options, imports, register) {
             });
         });
     });
-    
+
     // fake authentication
     api.authenticate = api.authenticate || function() {
-        return function(req, res, next) { 
+        return function(req, res, next) {
             req.user = extend({}, options.options.extendOptions.user);
-            next(); 
+            next();
         };
     };
     api.ensureAdmin = api.ensureAdmin || function() {
-        return function(req, res, next) { 
-            next(); 
+        return function(req, res, next) {
+            next();
         };
     };
     api.getVfsOptions = api.getVfsOptions || function(user, pid) {
@@ -238,7 +238,7 @@ function plugin(options, imports, register) {
             options._projects = [options.workspaceDir];
         }
         var wd = options._projects[pid] || options._projects[0];
-        
+
         return {
             workspaceDir: wd,
             extendOptions: {
@@ -250,15 +250,21 @@ function plugin(options, imports, register) {
                 readonly: user.id > 100
             }
         };
-    };    
+    };
     api.updatConfig = api.updatConfig || function(opts, params) {
+      function getCookie(name) {
+        var re = new RegExp(name + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        return (value != null) ? unescape(value[1]) : null;
+      }
+
         var id = params.token;
         opts.accessToken = id || "token";
         var user = opts.extendOptions.user;
         user.id = id || -1;
-        user.name = id ? "user" + id : "johndoe";
-        user.email = id ? "user" + id + "@c9.io" : "johndoe@example.org";
-        user.fullname = id ? "User " + id : "John Doe";
+        user.name = id ? "user" + id : getCookie('triton_username')
+        user.email = id ? "user" + id + "@c9.io" : "email@example.com"
+        user.fullname = id ? "User " + id : getCookie('trion_username')
         opts.workspaceDir = params.w ? params.w : options.workspaceDir;
         opts.projectName = basename(opts.workspaceDir);
         if (!options._projects) {
@@ -270,7 +276,7 @@ function plugin(options, imports, register) {
             pid = options._projects.push(opts.workspaceDir) - 1;
         project.id = pid;
     };
-    
+
     imports.connect.setGlobalOption("apiBaseUrl", "");
 
     register(null, {
@@ -308,10 +314,10 @@ function getConfigName(requested, options) {
     else {
         name = "default";
     }
-    
+
     if (options.local)
         name += "-local";
-    
+
     return name;
 }
 
@@ -325,7 +331,7 @@ function getConfig(configName, options) {
         "project": join(options.local ? installPath : join(workspaceDir, ".c9"), "project.settings"),
         "state": join(options.local ? installPath : join(workspaceDir, ".c9"), "state.settings")
     };
-    
+
     var fs = require("fs");
     for (var type in settings) {
         var data = "";
@@ -336,6 +342,6 @@ function getConfig(configName, options) {
         settings[type] = data;
     }
     options.options.settings = settings;
-    
+
     return require(filename)(options.options);
 }
