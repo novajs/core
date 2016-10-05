@@ -257,9 +257,9 @@ function plugin(options, imports, register) {
         var user = opts.extendOptions.user;
         user.id = id || -1;
         user.name = id ? "user" + id : process.env.USERNAME
-        user.email = id ? "user" + id + "@c9.io" : "johndoe@example.org";
-        user.fullname = id ? "User " + id : "John Doe";
-        opts.workspaceDir = params.w ? params.w : process.env.USERNAME
+        user.email = id ? "user" + id + "@c9.io" : process.env.EMAIL;
+        user.fullname = id ? "User " + id : process.env.DISPLAY_NAME;
+        opts.workspaceDir = params.w ? params.w : options.workspaceDir;
         opts.projectName = basename(opts.workspaceDir);
         if (!options._projects) {
             options._projects = [options.workspaceDir];
