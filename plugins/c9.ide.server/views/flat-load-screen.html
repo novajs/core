@@ -31,8 +31,8 @@
     $.ajax({
       url: 'https://api.tritonjs.com/v1/workspaces/heartbeat',
       method: 'POST',
-      xhrFields: {
-        withCredentials: true
+      headers: {
+        'Authentication': getCookie('triton_userapikey')
       }
     }, {
       username: getCookie('triton_username')
