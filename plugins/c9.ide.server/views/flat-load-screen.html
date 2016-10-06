@@ -33,9 +33,11 @@
       method: 'POST',
       headers: {
         'Authentication': getCookie('triton_userapikey').replace(/%3A/g, ':')
+      },
+      dataType: 'json',
+      data: {
+        username: getCookie('triton_username')
       }
-    }, {
-      username: getCookie('triton_username')
     }).done(function(data) {
       console.info('TRITON: Heartbeat Submitted.')
     }).fail(function(err) {
