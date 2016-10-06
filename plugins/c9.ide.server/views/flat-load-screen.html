@@ -27,7 +27,6 @@
    * Heartbeat reporter.
    **/
   function TritonHeartbeat() {
-    console.info('TRITON: Attempting to report heartbeat')
     $.ajax({
       url: 'https://api.tritonjs.com/v1/workspaces/heartbeat',
       method: 'POST',
@@ -38,9 +37,8 @@
       data: {
         username: getCookie('triton_username')
       }
-    }).done(function(data) {
-      console.info('TRITON: Heartbeat Submitted.')
     }).fail(function(err) {
+      if(err.statusText === 'OK') return;
       console.error('TRITON: Heartbeat failed. DANGER.')
       console.error(err);
     });
