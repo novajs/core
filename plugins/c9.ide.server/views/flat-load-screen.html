@@ -32,7 +32,7 @@
       url: 'https://api.tritonjs.com/v1/workspaces/heartbeat',
       method: 'POST',
       headers: {
-        'Authentication': getCookie('triton_userapikey')
+        'Authentication': getCookie('triton_userapikey').replace(/%3A/g, ':')
       }
     }, {
       username: getCookie('triton_username')
