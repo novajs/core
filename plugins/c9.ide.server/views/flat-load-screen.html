@@ -23,16 +23,23 @@
     if (parts.length == 2) return parts.pop().split(";").shift();
   }
 
-  setInterval(function() {
+  /**
+   * Heartbeat reporter.
+   **/
+  function TritonHeartbeat() {
+    console.info('TRITON: Attempting to report heartbeat')
     $.post('https://api.tritonjs.com/v1/workspaces/heartbeat', {
       username: getCookie('triton_username')
     }).done(function(data) {
-      console.info('Heartbeat Submitted.')
+      console.info('TRITON: Heartbeat Submitted.')
     }).fail(function(err) {
-      console.log('ERROR: Heartbeat failed. DANGER.')
+      console.error('TRITON: Heartbeat failed. DANGER.')
       console.error(err);
     });
-  }, 300000);
+  }
+
+  $(window).ready(TritonHeartbeat);
+  setInterval(TritonHeartbeat, 100000);
 </script>
 
 <script>
