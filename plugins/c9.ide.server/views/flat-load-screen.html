@@ -13,6 +13,27 @@
         </div>
     </div>
 </div>
+
+<!-- TRITON Online Heartbeat -->
+<script type="text/javascript">
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
+  setInterval(function() {
+    $.post('https://api.tritonjs.com/v1/workspace/heartbeat', {
+      username: getCookie('triton_username')
+    }).done(function(data) {
+      console.info('Heartbeat Submitted.')
+    }).fail(function(err) {
+      console.log('ERROR: Heartbeat failed. DANGER.')
+      console.error(err);
+    });
+  }, 300000);
+</script>
+
 <script>
     var loadingIde = document.querySelector("#loadingide");
     document.body.className = "loading " + loadingIde.className;
