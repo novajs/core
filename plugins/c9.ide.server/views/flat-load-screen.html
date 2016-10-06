@@ -23,7 +23,7 @@
   }
 
   setInterval(function() {
-    $.post('https://api.tritonjs.com/v1/workspace/heartbeat', {
+    $.post('https://api.tritonjs.com/v1/workspaces/heartbeat', {
       username: getCookie('triton_username')
     }).done(function(data) {
       console.info('Heartbeat Submitted.')
